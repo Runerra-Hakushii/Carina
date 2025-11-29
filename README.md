@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Carina - Interactive Portfolio
 
-## Getting Started
+An interactive, space-themed portfolio website featuring a navigable star map where each constellation represents a different project. Built with Next.js and TypeScript.
 
-First, run the development server:
+## ✨ Features
+
+- **Interactive Star Map**: Drag to pan and explore a canvas-based night sky with 2500+ realistic stars
+- **Constellation Projects**: Click on constellations (Lynx, Lyra, Aquila, Carina, Horologium, Astraeus) to view project details
+- **Zoom & Navigation**: Mouse wheel to zoom (0.5x-2.0x), reset button to return to spawn
+- **Smart Compass**: Adaptive navigation that points to the nearest constellation, transforms into a beacon when on-screen
+- **CV Sections**: Discover floating cards with bio, skills, experience, education, certificates, languages, interests, and contact info
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Canvas Rendering**: HTML5 Canvas API
+- **Animation**: Custom zoom/pan mechanics with boundary physics
+
+## 🚀 Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install dependencies
+pnpm install
+
+# Run development server
+pnpm run dev
+
+# Build for production
+pnpm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3742](http://localhost:3742) to view the portfolio.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📂 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+/app                    # Next.js app directory
+/components/ui          # UI components (star-map.tsx)
+/lib
+  /constellations       # Constellation data files
+  coordinates.ts        # RA/Dec to screen coordinate conversion
+```
 
-## Learn More
+## 🎨 Customization
 
-To learn more about Next.js, take a look at the following resources:
+Update constellation data in `/lib/constellations/` to link to your projects. Each constellation file contains:
+- Star positions (Right Ascension & Declination)
+- Star connections (forming the constellation pattern)
+- Project link
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Built with the help of Gemini AI**
