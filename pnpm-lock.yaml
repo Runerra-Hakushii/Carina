@@ -8,21 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@prisma/adapter-mariadb':
-        specifier: ^7.0.1
-        version: 7.0.1
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
       next:
         specifier: 16.0.5
         version: 16.0.5(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      next-auth:
-        specifier: ^4.24.13
-        version: 4.24.13(next@16.0.5(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      prisma:
-        specifier: ^7.0.1
-        version: 7.0.1(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
       react:
         specifier: 19.2.0
         version: 19.2.0
