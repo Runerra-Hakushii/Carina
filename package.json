@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3742",
     "build": "next build",
-    "start": "next start -p 11374",
+    "start": "next start -p 3742",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "docker-build": "docker build -t carina .",
+    "docker-run": "docker run -p 3742:3742 carina"
   },
   "dependencies": {
     "next": "16.0.5",

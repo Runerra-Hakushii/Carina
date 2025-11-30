@@ -29,6 +29,10 @@ pnpm run dev
 
 # Build for production
 pnpm run build
+
+# Run with Docker
+pnpm run docker-build
+pnpm run docker-run
 ```
 
 Open [http://localhost:3742](http://localhost:3742) to view the portfolio.
