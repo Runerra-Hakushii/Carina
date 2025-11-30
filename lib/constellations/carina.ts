@@ -4,7 +4,11 @@ import type { Constellation } from "./types";
 export const carina: Constellation = {
     name: "Carina",
     description: "The Keel, home to Canopus, second brightest star",
-    link: "https://github.com/StarOmniscient/Carina",
+    links: {
+        github: "https://github.com/StarOmniscient/Carina",
+        site: "https://runerra.org"
+    },
+    icon: "/carina_logo.png",
     stars: [
         { ra: 10.4, dec: -52.7, magnitude: -0.74, name: "Canopus (Alpha Carinae)" },
         { ra: 12.38, dec: -59.51, magnitude: 1.86, name: "Avior (Epsilon Carinae)" },

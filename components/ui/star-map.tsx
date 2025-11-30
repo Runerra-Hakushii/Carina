@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { allConstellations } from "@/lib/constellations";
 import type { Constellation } from "@/lib/constellations/types";
 import { raDecToScreen, distance } from "@/lib/coordinates";
@@ -338,14 +339,36 @@ export function StarMap({
         const mouseY = e.clientY - rect.top;
         const currentScale = BASE_SCALE * zoom;
 
+        // Helper for point to line segment distance
+        const distanceToSegment = (p: { x: number, y: number }, v: { x: number, y: number }, w: { x: number, y: number }) => {
+            const l2 = (v.x - w.x) ** 2 + (v.y - w.y) ** 2;
+            if (l2 === 0) return distance(p, v);
+            let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+            t = Math.max(0, Math.min(1, t));
+            return distance(p, { x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y) });
+        };
+
         let found = false;
         for (const constellation of allConstellations) {
             const screenStars = constellation.stars.map((star) =>
                 raDecToScreen(star.ra, star.dec, offset.x, offset.y, currentScale),
             );
 
+            // Check stars
             for (const pos of screenStars) {
                 if (distance({ x: mouseX, y: mouseY }, pos) < 30) {
+                    setHoveredConstellation(constellation);
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+
+            // Check connections
+            for (const [start, end] of constellation.connections) {
+                const p1 = screenStars[start];
+                const p2 = screenStars[end];
+                if (distanceToSegment({ x: mouseX, y: mouseY }, p1, p2) < 15) { // 15px threshold for lines
                     setHoveredConstellation(constellation);
                     found = true;
                     break;
@@ -359,23 +382,26 @@ export function StarMap({
         }
     };
 
+    const [selectedConstellation, setSelectedConstellation] = useState<Constellation | null>(null);
+
+    // ... (existing code)
+
     const handleClick = (e: React.MouseEvent) => {
         // Only trigger if we haven't moved (clicked)
-        if (!hasMovedRef.current && hoveredConstellation) {
-            window.open(hoveredConstellation.link, "_blank");
+        if (!hasMovedRef.current) {
+            if (hoveredConstellation) {
+                setSelectedConstellation(hoveredConstellation);
+            } else {
+                setSelectedConstellation(null);
+            }
         }
     };
 
-    // Clean up listeners on unmount
-    useEffect(() => {
-        return () => {
-            window.removeEventListener("mousemove", handleWindowMouseMove);
-            window.removeEventListener("mouseup", handleWindowMouseUp);
-        };
-    }, []);
+    // ... (existing code)
 
     return (
         <div className={`relative ${className}`}>
+            {/* ... (existing canvas) */}
             <canvas
                 ref={canvasRef}
                 width={width}
@@ -496,6 +522,82 @@ export function StarMap({
                 )
             )}
 
+            {/* Project Popup */}
+            {selectedConstellation && (
+                <div
+                    className="absolute z-50 w-80"
+                    style={{
+                        left: width / 2,
+                        top: height / 2,
+                        transform: "translate(-50%, -50%)",
+                    }}
+                >
+                    <div className="bg-gray-900/90 backdrop-blur-md border border-blue-400/30 rounded-lg p-6 w-full shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                        <div className="flex justify-between items-start mb-4">
+                            <div className="flex items-center gap-3">
+                                {selectedConstellation.icon && (
+                                    <div className="w-10 h-10 relative rounded-full overflow-hidden border border-blue-400/30 bg-black/50">
+                                        <Image
+                                            src={selectedConstellation.icon}
+                                            alt={`${selectedConstellation.name} icon`}
+                                            width={40}
+                                            height={40}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                )}
+                                <h3 className="text-2xl font-bold text-blue-300 tracking-wide">
+                                    {selectedConstellation.name}
+                                </h3>
+                            </div>
+                            <button
+                                onClick={() => setSelectedConstellation(null)}
+                                className="text-blue-400/60 hover:text-blue-200 transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p className="text-blue-100/80 mb-6 text-sm leading-relaxed">
+                            {selectedConstellation.description}
+                        </p>
+
+                        <div className="flex gap-3">
+                            <a
+                                href={selectedConstellation.links.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 flex items-center justify-center gap-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 hover:border-blue-500/50 text-blue-200 py-2 rounded-md transition-all group"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform">
+                                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                </svg>
+                                <span>GitHub</span>
+                            </a>
+
+                            {selectedConstellation.links.site && (
+                                <a
+                                    href={selectedConstellation.links.site}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex-1 flex items-center justify-center gap-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 hover:border-blue-500/50 text-blue-200 py-2 rounded-md transition-all group"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                    <span>Visit</span>
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Profile at Spawn (Center) */}
             <div
                 className="absolute pointer-events-none flex flex-col items-center justify-center text-center"
@@ -506,7 +608,7 @@ export function StarMap({
                 }}
             >
                 <h1 className="text-5xl md:text-7xl font-bold text-white tracking-widest opacity-90 mb-2">
-                    Sebastian Savary
+                    Hakushi
                 </h1>
                 <h2 className="text-xl md:text-2xl text-blue-300 font-light tracking-[0.2em] uppercase mb-4">
                     Project: Carina
@@ -702,6 +804,6 @@ export function StarMap({
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
