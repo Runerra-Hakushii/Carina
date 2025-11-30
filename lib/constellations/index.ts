@@ -9,6 +9,7 @@ export * from "./aquila";
 export * from "./carina";
 export * from "./horologium";
 export * from "./astraeus";
+export * from "./matchup";
 
 // Array of all constellations for easy iteration
 import { lynx } from "./lynx";
@@ -17,5 +18,6 @@ import { aquila } from "./aquila";
 import { carina } from "./carina";
 import { horologium } from "./horologium";
 import { astraeus } from "./astraeus";
+import { matchup } from "./matchup";
 
-export const allConstellations = [lynx, lyra, aquila, carina, horologium, astraeus];
+export const allConstellations = [lynx, lyra, aquila, carina, horologium, astraeus, matchup];

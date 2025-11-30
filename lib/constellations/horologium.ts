@@ -4,7 +4,11 @@ import type { Constellation } from "./types";
 export const horologium: Constellation = {
     name: "Horologium",
     description: "The Pendulum Clock, keeping time in the southern sky",
-    link: "https://github.com/StarOmniscient/Horologium",
+    links: {
+        github: "https://github.com/StarOmniscient/Horologium",
+        site: "https://horologium.runerra.org"
+    },
+    icon: "/horologium_logo.png",
     stars: [
         { ra: 4.23, dec: -42.3, magnitude: 3.85, name: "Alpha Horologii" },
         { ra: 2.85, dec: -51.07, magnitude: 4.98, name: "R Horologii" }, // Variable star

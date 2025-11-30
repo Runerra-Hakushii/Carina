@@ -4,7 +4,11 @@ import type { Constellation } from "./types";
 export const lyra: Constellation = {
     name: "Lyra",
     description: "The celestial harp, home to brilliant Vega",
-    link: "https://github.com/StarOmniscient/Lyra",
+    links: {
+        github: "https://github.com/StarOmniscient/Lyra",
+        site: "https://lyra.runerra.org"
+    },
+    icon: "/lyra_logo.png",
     stars: [
         { ra: 14.62, dec: 38.78, magnitude: 0.03, name: "Vega (Alpha Lyrae)" },
         { ra: 14.73, dec: 39.66, magnitude: 4.78, name: "Epsilon Lyrae" },

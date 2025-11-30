@@ -4,7 +4,11 @@ import type { Constellation } from "./types";
 export const aquila: Constellation = {
     name: "Aquila",
     description: "The soaring eagle, home to brilliant Altair",
-    link: "https://github.com/StarOmniscient/Aquila-archive",
+    links: {
+        github: "https://github.com/StarOmniscient/Aquila-archive",
+        site: "https://aquila.runerra.org"
+    },
+    icon: "/aquila_logo.png",
     stars: [
         { ra: 17.85, dec: 8.87, magnitude: 0.76, name: "Altair (Alpha Aquilae)" },
         { ra: 17.92, dec: 6.41, magnitude: 3.71, name: "Alshain (Beta Aquilae)" },

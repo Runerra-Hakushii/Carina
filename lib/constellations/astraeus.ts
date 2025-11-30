@@ -4,7 +4,11 @@ import type { Constellation } from "./types";
 export const astraeus: Constellation = {
     name: "Astraeus",
     description: "Titan god of the dusk, stars, and planets, and the art of astrology",
-    link: "https://github.com/StarOmniscient/Astraeus",
+    links: {
+        github: "https://github.com/StarOmniscient/Astraeus",
+        site: "https://astraeus.runerra.org",
+    },
+    icon: "/astraeus_logo.png",
     stars: [
         // Custom pattern resembling a star or wind rose
         { ra: 28.0, dec: 15.0, magnitude: 2.5, name: "Astraeus Prime" }, // Center

@@ -4,7 +4,11 @@ import type { Constellation } from "./types";
 export const lynx: Constellation = {
     name: "Lynx",
     description: "The elusive feline of the northern sky",
-    link: "https://github.com/StarOmniscient/Lynx",
+    links: {
+        github: "https://github.com/StarOmniscient/Lynx",
+        site: "https://lynx.runerra.org",
+    },
+    icon: "/lynx_logo.png",
     stars: [
         { ra: 6.15, dec: 59.0, magnitude: 5.25, name: "2 Lyncis" },
         { ra: 6.95, dec: 58.42, magnitude: 4.35, name: "15 Lyncis" },

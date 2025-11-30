@@ -9,6 +9,10 @@ export interface Constellation {
     name: string;
     stars: Star[];
     connections: number[][]; // Pairs of star indices to connect
-    link: string; // URL to redirect on click
+    links: {
+        github: string;
+        site?: string;
+    }; // URLs to redirect on click
+    icon?: string;
     description: string;
 }
